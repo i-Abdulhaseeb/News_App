@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,6 +11,21 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  final _formkey1 = GlobalKey<FormState>();
+  final _formkey2 = GlobalKey<FormState>();
+
+  String userEmail = "";
+  String userPassword = "";
+  void logInUser() async {
+    _formkey1.currentState!.save();
+    _formkey2.currentState!.save();
+
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: userEmail,
+      password: userPassword,
+    );
+  }
+
   bool _obscureText = true;
   Widget build(BuildContext context) {
     return Column(
@@ -32,7 +48,12 @@ class _LoginFormState extends State<LoginForm> {
         SizedBox(
           width: 360,
           child: Form(
+            key: _formkey1,
             child: TextFormField(
+              onSaved: (value) {
+                userEmail = value!;
+              },
+              validator: (value) {},
               style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
               decoration: InputDecoration(
                 filled: true,
@@ -97,7 +118,11 @@ class _LoginFormState extends State<LoginForm> {
         SizedBox(
           width: 360,
           child: Form(
+            key: _formkey2,
             child: TextFormField(
+              onSaved: (value) {
+                userPassword = value!;
+              },
               style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
               obscureText: _obscureText,
               decoration: InputDecoration(
@@ -139,7 +164,7 @@ class _LoginFormState extends State<LoginForm> {
           width: 360,
           height: 50,
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: logInUser,
             style: ElevatedButton.styleFrom(
               elevation: 8,
               shadowColor: Colors.blue,
