@@ -23,10 +23,20 @@ class _SignupFormState extends State<SignupForm> {
   void onSaveSignUp() async {
     if (_formkey1.currentState!.validate()) {
       _formkey1.currentState!.save();
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _SignUpEmail,
-        password: _SignUpPassword,
-      );
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: _SignUpEmail,
+          password: _SignUpPassword,
+        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Sign up Successfull")));
+      } on FirebaseAuthException catch (e) {
+        String message = "Confirm Credentials Again";
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
     }
   }
 

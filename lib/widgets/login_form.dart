@@ -12,48 +12,70 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formkey1 = GlobalKey<FormState>();
-  final _formkey2 = GlobalKey<FormState>();
 
   String userEmail = "";
   String userPassword = "";
   void logInUser() async {
-    _formkey1.currentState!.save();
-    _formkey2.currentState!.save();
+    if (_formkey1.currentState!.validate()) {
+      _formkey1.currentState!.save();
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: userEmail,
+          password: userPassword,
+        );
 
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: userEmail,
-      password: userPassword,
-    );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: const Text("Login Successfull")));
+      } on FirebaseAuthException catch (e) {
+        String message = 'Invalid credentials or Error';
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+      }
+    }
   }
 
   bool _obscureText = true;
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: AlignmentGeometry.centerLeft,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28),
-            child: Text(
-              "Email Address",
-              style: GoogleFonts.lato(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
+    return Form(
+      key: _formkey1,
+      child: Column(
+        children: [
+          Align(
+            alignment: AlignmentGeometry.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Text(
+                "Email Address",
+                style: GoogleFonts.lato(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(height: 10),
-        SizedBox(
-          width: 360,
-          child: Form(
-            key: _formkey1,
+          SizedBox(height: 10),
+          SizedBox(
+            width: 360,
             child: TextFormField(
               onSaved: (value) {
                 userEmail = value!;
               },
-              validator: (value) {},
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "Empty Email not accepted";
+                }
+                final email = value.trim();
+                if (!email.contains("@") ||
+                    !email.contains(".") ||
+                    email.contains(" ")) {
+                  return "Enter Valid Email";
+                }
+                return null;
+              },
               style: GoogleFonts.inter(color: Colors.white, fontSize: 18),
               decoration: InputDecoration(
                 filled: true,
@@ -79,47 +101,56 @@ class _LoginFormState extends State<LoginForm> {
               keyboardType: TextInputType.emailAddress,
             ),
           ),
-        ),
-        SizedBox(height: 15),
-        Row(
-          children: [
-            Align(
-              alignment: AlignmentGeometry.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Text(
-                  "Password",
-                  style: GoogleFonts.lato(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
+          SizedBox(height: 15),
+          Row(
+            children: [
+              Align(
+                alignment: AlignmentGeometry.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Text(
+                    "Password",
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),
                   ),
                 ),
               ),
-            ),
-            Spacer(),
-            TextButton(
-              onPressed: () {},
-              style: TextButton.styleFrom(
-                padding: EdgeInsets.symmetric(horizontal: 25),
-              ),
-              child: Text(
-                "Forgot Password?",
-                style: GoogleFonts.lato(
-                  color: Color(0xFF1277DB),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+              Spacer(),
+              TextButton(
+                onPressed: () {},
+                style: TextButton.styleFrom(
+                  padding: EdgeInsets.symmetric(horizontal: 25),
+                ),
+                child: Text(
+                  "Forgot Password?",
+                  style: GoogleFonts.lato(
+                    color: Color(0xFF1277DB),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        SizedBox(height: 10),
-        SizedBox(
-          width: 360,
-          child: Form(
-            key: _formkey2,
+            ],
+          ),
+          SizedBox(height: 10),
+          SizedBox(
+            width: 360,
             child: TextFormField(
+              validator: (value) {
+                if (value == null || value.trim().isEmpty) {
+                  return "Empty Password";
+                }
+                if (value.length < 6) {
+                  return 'Password must be at least 6 characters';
+                }
+                if (value.contains(' ')) {
+                  return 'Password cannot contain spaces';
+                }
+                return null;
+              },
               onSaved: (value) {
                 userPassword = value!;
               },
@@ -158,101 +189,101 @@ class _LoginFormState extends State<LoginForm> {
               keyboardType: TextInputType.visiblePassword,
             ),
           ),
-        ),
-        SizedBox(height: 25),
-        SizedBox(
-          width: 360,
-          height: 50,
-          child: ElevatedButton(
-            onPressed: logInUser,
-            style: ElevatedButton.styleFrom(
-              elevation: 8,
-              shadowColor: Colors.blue,
+          SizedBox(height: 25),
+          SizedBox(
+            width: 360,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: logInUser,
+              style: ElevatedButton.styleFrom(
+                elevation: 8,
+                shadowColor: Colors.blue,
 
-              backgroundColor: Color(0xFF1277DB),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Log In",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
+                backgroundColor: Color(0xFF1277DB),
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                SizedBox(width: 12),
-                Icon(Icons.door_back_door, size: 22),
-              ],
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Log In",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  Icon(Icons.door_back_door, size: 22),
+                ],
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: Divider(
-                color: Color(0xFF233648),
-                thickness: 1,
-                endIndent: 10,
-              ),
-            ),
-            Text(
-              "Or continue with",
-              style: GoogleFonts.lato(
-                color: Color(0xFF8F9DB2),
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            Expanded(
-              child: Divider(
-                color: Color(0xFF233648),
-                thickness: 1,
-                indent: 10,
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 15),
-        SizedBox(
-          width: 360,
-          height: 50,
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              elevation: 8,
-              shadowColor: Colors.blue,
-
-              backgroundColor: Colors.white,
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Continue with Google",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
+          SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: Divider(
+                  color: Color(0xFF233648),
+                  thickness: 1,
+                  endIndent: 10,
                 ),
-                SizedBox(width: 12),
-                FaIcon(FontAwesomeIcons.google),
-              ],
+              ),
+              Text(
+                "Or continue with",
+                style: GoogleFonts.lato(
+                  color: Color(0xFF8F9DB2),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Expanded(
+                child: Divider(
+                  color: Color(0xFF233648),
+                  thickness: 1,
+                  indent: 10,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 15),
+          SizedBox(
+            width: 360,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                elevation: 8,
+                shadowColor: Colors.blue,
+
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 20),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Continue with Google",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(width: 12),
+                  FaIcon(FontAwesomeIcons.google),
+                ],
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
