@@ -73,6 +73,7 @@ flutter:
       - assets/headerImg.png
       - assets/profile.png
       - assets/user.png
+      - assets/profileuser.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
