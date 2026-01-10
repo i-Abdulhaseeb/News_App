@@ -56,7 +56,6 @@ class BbcNews extends StatelessWidget {
             itemCount: trending.length,
             itemBuilder: (context, index) {
               final t1 = trending[index];
-
               final imageUrl = t1['urlToImage'] as String?;
               final title = t1['title'] as String?;
               final source = t1['source']['name'];
@@ -83,14 +82,14 @@ class BbcNews extends StatelessWidget {
                       },
                       splashColor: Colors.white24,
                       child: Card(
-                        color: Color(0xFF1A2430),
+                        color: const Color(0xFF1A2430),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         margin: const EdgeInsets.symmetric(
                           horizontal: 12,
-                          vertical: 8,
-                        ),
+                          vertical: 6,
+                        ), // reduced vertical margin
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -102,7 +101,7 @@ class BbcNews extends StatelessWidget {
                                   topRight: Radius.circular(16),
                                 ),
                                 child: SizedBox(
-                                  height: 180,
+                                  height: 160, // slightly smaller height
                                   width: double.infinity,
                                   child: Image.network(
                                     imageUrl!,
@@ -114,12 +113,11 @@ class BbcNews extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,
-                                vertical: 8,
-                              ),
+                                vertical: 6,
+                              ), // smaller vertical padding
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Title
                                   Text(
                                     title,
                                     maxLines: 2,
@@ -131,7 +129,6 @@ class BbcNews extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-
                                   Row(
                                     children: [
                                       const Icon(
@@ -140,11 +137,16 @@ class BbcNews extends StatelessWidget {
                                         size: 16,
                                       ),
                                       const SizedBox(width: 4),
-                                      Text(
-                                        source,
-                                        style: TextStyle(
-                                          color: Colors.grey[400],
-                                          fontSize: 14,
+                                      Flexible(
+                                        // prevent overflow
+                                        child: Text(
+                                          source,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.grey[400],
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
                                     ],

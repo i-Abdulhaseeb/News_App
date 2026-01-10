@@ -1,1 +1,39 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"newsapp-e1ff8","appId":"1:495227490018:android:7fe68e111deef8d87f98bb","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"newsapp-e1ff8","configurations":{"android":"1:495227490018:android:7fe68e111deef8d87f98bb","ios":"1:495227490018:ios:7c9e4fca2a79913b7f98bb","macos":"1:495227490018:ios:7c9e4fca2a79913b7f98bb","web":"1:495227490018:web:cab505ef4a1f1dd17f98bb","windows":"1:495227490018:web:9cff2857a2002e057f98bb"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "newsapp-e1ff8",
+          "appId": "1:495227490018:android:7fe68e111deef8d87f98bb",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "newsapp-e1ff8",
+          "configurations": {
+            "android": "1:495227490018:android:7fe68e111deef8d87f98bb",
+            "ios": "1:495227490018:ios:7c9e4fca2a79913b7f98bb",
+            "macos": "1:495227490018:ios:7c9e4fca2a79913b7f98bb",
+            "web": "1:495227490018:web:cab505ef4a1f1dd17f98bb",
+            "windows": "1:495227490018:web:9cff2857a2002e057f98bb"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

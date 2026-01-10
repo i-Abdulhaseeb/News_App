@@ -15,12 +15,42 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late Future<List<dynamic>> _articles;
   late Future<List<dynamic>> _bbcArticles;
+  late Future<List<dynamic>> _bitcoinArticles;
+  late Future<List<dynamic>> _appleArticles;
+  late Future<List<dynamic>> _techArticles;
   int selectedIndex = -1;
   @override
   void initState() {
     super.initState();
     _articles = NewsService().fetchTopHeadlines();
     _bbcArticles = NewsService().fetchBBCHeadlines();
+  }
+
+  Future<List<dynamic>> articleTosend() {
+    if (selectedIndex == -1 || selectedIndex == 3) {
+      return _bbcArticles;
+    } else if (selectedIndex == 0) {
+      _bitcoinArticles = NewsService().fetchBitcoinHeadlines();
+      return _bitcoinArticles;
+    } else if (selectedIndex == 1) {
+      _appleArticles = NewsService().fetchAppleHeadlines();
+      return _appleArticles;
+    } else {
+      _techArticles = NewsService().fetchTechHeadlines();
+      return _techArticles;
+    }
+  }
+
+  String articleBy() {
+    if (selectedIndex == -1 || selectedIndex == 3) {
+      return "BBC";
+    } else if (selectedIndex == 0) {
+      return "Bitcoin";
+    } else if (selectedIndex == 1) {
+      return "Apple";
+    } else {
+      return "Tech";
+    }
   }
 
   @override
@@ -151,7 +181,7 @@ class _HomePageState extends State<HomePage> {
               child: Align(
                 alignment: AlignmentGeometry.centerLeft,
                 child: Text(
-                  "Top Stories By BBC",
+                  "Top Stories of " + articleBy(),
                   style: GoogleFonts.lato(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -161,7 +191,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             SizedBox(height: 15),
-            BbcNews(articles: _bbcArticles),
+            BbcNews(articles: articleTosend()),
           ],
         ),
       ),

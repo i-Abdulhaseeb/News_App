@@ -290,7 +290,7 @@ class _SignupFormState extends State<SignupForm> {
                 ),
               ),
               Text(
-                "Or continue with",
+                "Already Have An Account?",
                 style: GoogleFonts.lato(
                   color: Color(0xFF8F9DB2),
                   fontSize: 14,
@@ -305,38 +305,6 @@ class _SignupFormState extends State<SignupForm> {
                 ),
               ),
             ],
-          ),
-          SizedBox(height: 15),
-          SizedBox(
-            width: 360,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                elevation: 8,
-                shadowColor: Colors.blue,
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "SignUp with Google",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  FaIcon(FontAwesomeIcons.google),
-                ],
-              ),
-            ),
           ),
         ],
       ),

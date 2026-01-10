@@ -102,39 +102,22 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           SizedBox(height: 15),
-          Row(
-            children: [
-              Align(
-                alignment: AlignmentGeometry.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28),
-                  child: Text(
-                    "Password",
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
+
+          Align(
+            alignment: AlignmentGeometry.centerLeft,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Text(
+                "Password",
+                style: GoogleFonts.lato(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-              Spacer(),
-              TextButton(
-                onPressed: () {},
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                ),
-                child: Text(
-                  "Forgot Password?",
-                  style: GoogleFonts.lato(
-                    color: Color(0xFF1277DB),
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
+
           SizedBox(height: 10),
           SizedBox(
             width: 360,
@@ -233,7 +216,7 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
               Text(
-                "Or continue with",
+                "Or create Account",
                 style: GoogleFonts.lato(
                   color: Color(0xFF8F9DB2),
                   fontSize: 14,
@@ -248,39 +231,6 @@ class _LoginFormState extends State<LoginForm> {
                 ),
               ),
             ],
-          ),
-          SizedBox(height: 15),
-          SizedBox(
-            width: 360,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {},
-              style: ElevatedButton.styleFrom(
-                elevation: 8,
-                shadowColor: Colors.blue,
-
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 20),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Continue with Google",
-                    style: GoogleFonts.montserrat(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  SizedBox(width: 12),
-                  FaIcon(FontAwesomeIcons.google),
-                ],
-              ),
-            ),
           ),
         ],
       ),
